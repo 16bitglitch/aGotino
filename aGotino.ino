@@ -287,6 +287,9 @@ int slewRaDecBySecs(long raSecs, long decSecs) {
   unsigned long raSteps  = (abs(raSecs) * MICROSTEPS_PER_HOUR) / 3600;
   unsigned long decSteps = (abs(decSecs) * MICROSTEPS_PER_DEGREE_DEC) / 3600;
 
+/*
+  //Removed full steps as am only running in microsteps using the cnc v3 board
+
   // calculate how many full&micro steps are needed
   unsigned long raFullSteps   = raSteps / MICROSTEPS_RA;             // this will truncate the result...
   unsigned long raMicroSteps  = raSteps - raFullSteps * MICROSTEPS_RA; // ...remaining microsteps
@@ -315,11 +318,22 @@ int slewRaDecBySecs(long raSecs, long decSecs) {
   // Final Adjustment
   // Note: we need 6.66 full steps per minute (with the defualt gears settings)
   //       i.e. one full step is  less than 1/6', i.e. <10". Who cares of fixing such small offset? Well, we do.
+  /*
   printLog(" RA uSteps:");
   printLogUL(raMicroSteps);
   printLog(" DEC uSteps:");
   printLogUL(decMicroSteps);
   slewRaDecBySteps(raMicroSteps, decMicroSteps);
+  printLog("uSteps Slew Done");
+*/
+  printLog(" RA uSteps:");
+  printLogUL(raMicroSteps);
+  printLog(" DEC uSteps:");
+  printLogUL(decMicroSteps);
+   
+   //move this to here since we only doing microsteps and still need to make sure its not taken too long
+  unsigned long slewTime = micros(); // record when slew code starts, RA 1x movement will be on hold hence we need to add the gap later on
+  slewRaDecBySteps(raSteps, decSteps);
   printLog("uSteps Slew Done");
 
   // If slewing took more than 5" (secs), adjust RA
@@ -333,7 +347,7 @@ int slewRaDecBySecs(long raSecs, long decSecs) {
 
   // reset RA to right sidereal direction
   digitalWrite(raDirPin,  RA_DIR);
-
+  
   // Success
   return 1;
 }
