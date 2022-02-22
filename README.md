@@ -1,5 +1,6 @@
-# aGotino
-**A telescope Goto solution based on Arduino** (Nano, Uno or up).
+# aGotino for CNCV3 Shield
+
+**A telescope Goto solution based on Arduino** (Nano, Uno or up), updated to run with the CNCV3 Shield and micro steps only. Timing is calcuated from the mount info.
 
 aGotino can be controlled via bluetooth or USB from a mobile device or PC/Mac. Point the scope to something you can easily find (a bright star), align/sync with it, and then reach a remote, low magnitude object nearby. Star alignment procedures are _not_ required, you can move and rotate your scope freely, until you need that extra help. 
 
