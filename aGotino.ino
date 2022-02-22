@@ -1,5 +1,5 @@
 /*
-   aGotino a simple Goto with Arduino (Nano/Uno)
+   aGotino a simple Goto with Arduino (Nano/Uno) -- Update By @CharlesGershom/16BitGlitch
 
       * tracking 
       * cycle among forward and backward speeds on RA&Dec at buttons press
