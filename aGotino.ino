@@ -31,12 +31,22 @@
  * Update the values below to match your mount/gear ratios and your preferences: 
  * * * * * * */
 
-const unsigned long STEP_DELAY = 18699;                // see above calculation
-const unsigned long MICROSTEPS_PER_DEGREE_RA  = 12800; // see above calculation
-const unsigned long MICROSTEPS_PER_DEGREE_DEC = MICROSTEPS_PER_DEGREE_RA; // calculate correct value if DEC gears/worm/microsteps differs from RA ones
 
+
+//Hardware Config
 const unsigned long MICROSTEPS_RA  = 32; // RA  Driver Microsteps
 const unsigned long MICROSTEPS_DEC = 32; // DEC Driver Microsteps
+
+const unsigned long RA_WORM_RATIO = 130;
+const unsigned long RA_GEAR_RATIO = 3;
+const unsigned long RA_STEPS_PER_REV = 400;
+
+// see above calculation
+const float Seconds_Earth_Rotate=86164.09053;
+unsigned float Earth_Seconds_Per_Degree =Seconds_Earth_Rotate / 360.0;
+unsigned long MICROSTEPS_PER_DEGREE_RA=MICROSTEPS_PER_DEGREE_RA =((float)RA_WORM_RATIO * (float)RA_GEAR_RATIO *  (float)RA_STEPS_PER_REV * (float)MICROSTEPS_RA) / 360.0;
+unsigned long MICROSTEPS_PER_DEGREE_DEC=MICROSTEPS_PER_DEGREE_RA;
+unsigned long STEP_DELAY = (Earth_Seconds_Per_Degree / MICROSTEPS_PER_DEGREE_RA) * 1000000.0;              
 
 const long SERIAL_SPEED = 9600;          // serial interface baud. Make sure your computer/phone matches this
 long MAX_RANGE = 1800;                   // default max slew range in deg minutes (1800'=30°). See +range command
@@ -142,6 +152,7 @@ unsigned int  decPlayIdx     = 0; // pulse index, Dec will accellerate for first
 
 String _aGotino = "aGotino";
 const unsigned long _ver = 210708;
+
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
